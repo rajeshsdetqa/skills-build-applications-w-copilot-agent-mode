@@ -1,4 +1,5 @@
 
+
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Activities from './components/Activities';
@@ -6,13 +7,17 @@ import Leaderboard from './components/Leaderboard';
 import Teams from './components/Teams';
 import Users from './components/Users';
 import Workouts from './components/Workouts';
+import logo from './octofitapp-small.png';
 
 function App() {
   return (
     <Router>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+      <nav className="navbar navbar-expand-lg octofit-navbar mb-4">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">Octofit Tracker</Link>
+          <Link className="navbar-brand d-flex align-items-center" to="/">
+            <img src={logo} alt="Octofit Logo" className="octofit-logo me-2" />
+            <span>Octofit Tracker</span>
+          </Link>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item"><Link className="nav-link" to="/activities">Activities</Link></li>
@@ -31,7 +36,7 @@ function App() {
           <Route path="/teams" element={<Teams />} />
           <Route path="/users" element={<Users />} />
           <Route path="/workouts" element={<Workouts />} />
-          <Route path="/" element={<h2>Welcome to Octofit Tracker!</h2>} />
+          <Route path="/" element={<h2 className="octofit-heading">Welcome to Octofit Tracker!</h2>} />
         </Routes>
       </div>
     </Router>
