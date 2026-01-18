@@ -18,6 +18,63 @@ import os
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
+from rest_framework import routers, viewsets
+from . import models
+
+# Minimal ViewSets for router registration (no custom logic, as per instructions)
+from rest_framework import serializers
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = '__all__'
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = '__all__'
+
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Activity
+        fields = '__all__'
+
+class WorkoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Workout
+        fields = '__all__'
+
+class LeaderboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Leaderboard
+        fields = '__all__'
+
+class TeamViewSet(viewsets.ModelViewSet):
+    queryset = models.Team.objects.all()
+    serializer_class = TeamSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = models.User.objects.all()
+    serializer_class = UserSerializer
+
+class ActivityViewSet(viewsets.ModelViewSet):
+    queryset = models.Activity.objects.all()
+    serializer_class = ActivitySerializer
+
+class WorkoutViewSet(viewsets.ModelViewSet):
+    queryset = models.Workout.objects.all()
+    serializer_class = WorkoutSerializer
+
+class LeaderboardViewSet(viewsets.ModelViewSet):
+    queryset = models.Leaderboard.objects.all()
+    serializer_class = LeaderboardSerializer
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'teams', TeamViewSet)
+router.register(r'activities', ActivityViewSet)
+router.register(r'workouts', WorkoutViewSet)
+router.register(r'leaderboard', LeaderboardViewSet)
 
 def api_root(request):
     codespace_name = os.environ.get('CODESPACE_NAME', 'localhost')
@@ -33,5 +90,6 @@ def api_root(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', api_root, name='api-root'),
+    path('api/', include(router.urls)),
     path('', api_root, name='root'),
 ]
